@@ -14,7 +14,7 @@ export default {
       renderer: {},
       scene:{},
       camera: {},
-      cube: {}
+      group: {}
     }
   },
   methods:{
@@ -23,19 +23,29 @@ export default {
       var container = document.getElementById( 'hello' );
 
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-      var material = new THREE.MeshBasicMaterial( { color: 0x2194ce, emissive:0x0, wireframe: true} );
+      var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+      
+      var group = new THREE.Group();
+      var geometry = new THREE.SphereGeometry(3, 32, 32);
+      var texture = new THREE.TextureLoader().load( '/static/image/material4.jpg' );
+      var material = new THREE.MeshBasicMaterial( {map: texture});
       var cube = new THREE.Mesh( geometry, material );
-      this.cube = cube
-      scene.add( cube );
 
-      camera.position.z = 5;
+
+      var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x333333, 2);
+      hemisphereLight.position.x = 0;
+      hemisphereLight.position.y = 0;
+      hemisphereLight.position.z = 100;
+      group.add(hemisphereLight);
+      group.add(cube)
+
+      this.group = group
+      scene.add( group );
+      camera.position.z = 20;
 
       var renderer = new THREE.WebGLRenderer();
-      renderer.setSize( window.innerWidth, window.innerHeight );
+      renderer.setSize( window.innerWidth-20, window.innerHeight-20);
       this.scene = scene;
-      this.cube = cube;
       this.camera = camera;
       this.renderer = renderer;
       container.appendChild( renderer.domElement );
@@ -43,8 +53,7 @@ export default {
     },
     animate() {
       requestAnimationFrame( this.animate );
-      this.cube.rotation.x += 0.01;
-      this.cube.rotation.y += 0.01;
+      this.group.rotation.y += 0.005;
       this.renderer.render( this.scene, this.camera );
     }
   },
