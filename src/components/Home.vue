@@ -1,11 +1,10 @@
 <template>
   <div class="hello" id="hello">
-    
   </div>
 </template>
 
 <script>
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 export default {
   name: 'HelloWorld',
@@ -14,34 +13,35 @@ export default {
       renderer: {},
       scene:{},
       camera: {},
-      group: {}
+      cube: {},
     }
   },
   methods:{
     init(){
       // /static/image/materail4.jpg
       var container = document.getElementById( 'hello' );
-
+      //console.log(container.innerWidth)
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
-      
+      camera.position.z = 20;
       var group = new THREE.Group();
       var geometry = new THREE.SphereGeometry(3, 32, 32);
       var texture = new THREE.TextureLoader().load( '/static/image/material4.jpg' );
-      var material = new THREE.MeshBasicMaterial( {map: texture});
+      scene.background=new THREE.TextureLoader().load( '/static/image/bgstars.png' );
+      var material = new THREE.MeshLambertMaterial( {
+        map: texture,
+      });
       var cube = new THREE.Mesh( geometry, material );
-
-
-      var hemisphereLight = new THREE.HemisphereLight(0xffffff, 0x333333, 2);
-      hemisphereLight.position.x = 0;
-      hemisphereLight.position.y = 0;
-      hemisphereLight.position.z = 100;
-      group.add(hemisphereLight);
+      this.cube = cube
+      // 位置不同，方向光作用于物体的面也不同，看到的物体各个面的颜色也不一样
+      var light = new THREE.DirectionalLight(0xFFFFFF,4);
+      light.position.set(100,100,-6);
+      var Amlight = new THREE.AmbientLight( 0xFFFFFF ); // soft white light
+      group.add( Amlight );
+      group.add(light);
       group.add(cube)
-
-      this.group = group
       scene.add( group );
-      camera.position.z = 20;
+ 
 
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth-20, window.innerHeight-20);
@@ -53,7 +53,7 @@ export default {
     },
     animate() {
       requestAnimationFrame( this.animate );
-      this.group.rotation.y += 0.005;
+      this.cube.rotation.y += 0.005;
       this.renderer.render( this.scene, this.camera );
     }
   },
@@ -66,5 +66,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 body { margin: 0; }
-canvas { width: 100%; height: 100% }
+/* canvas { width: 100%; height: 100% } */
+#bglight{
+  position: absolute;
+  z-index: 10;
+  top: 20%;
+  left: 50%;
+  width: 345px;
+}
 </style>
