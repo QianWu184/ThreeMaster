@@ -5,7 +5,7 @@
 
 <script>
 import * as THREE from 'three';
-
+import OrbitControls from 'three-orbitcontrols'
 export default {
   name: 'HelloWorld',
   data () {
@@ -43,11 +43,20 @@ export default {
       scene.add( group );
  
 
+      
+
       var renderer = new THREE.WebGLRenderer();
       renderer.setSize( window.innerWidth-20, window.innerHeight-20);
       this.scene = scene;
       this.camera = camera;
       this.renderer = renderer;
+
+
+      const controls = new OrbitControls(camera, renderer.domElement)
+      controls.enableDamping = true
+      controls.dampingFactor = 0.25
+      controls.enableZoom = false
+      
       container.appendChild( renderer.domElement );
       this.animate();
     },
