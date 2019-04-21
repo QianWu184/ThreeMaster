@@ -4,10 +4,12 @@
 </template>
 
 <script>
+/**
+ *使用three.js加贴图纹理 模拟地球
+ */
 import * as THREE from 'three';
 import OrbitControls from 'three-orbitcontrols'
 export default {
-  name: 'HelloWorld',
   data () {
     return {
       renderer: {},
@@ -79,7 +81,22 @@ body { margin: 0; }
   width: 345px;
 }
 #hello{
-    width: 600px;
-    height: 600px;
+    width: 100%;
+    height: 100%;
+}
+.el-main{
+    padding: 0px;
+}
+@media screen and (max-width: 768px){
+    #hello{
+        width: 100%;
+        height: 300px;
+    }
+}
+@media screen and (min-width: 768px){
+    #hello{
+        width: 100%;
+        height: 600px;
+    }
 }
 </style>

@@ -8,7 +8,13 @@ export const navs = [
     path: '/maps',
     childs: [{
       name: 'ThreeJS',
-      path: '/maps/threejsmap'
+      path: '/threejsmap'
+    }, {
+      name: 'Openlayers',
+      path: '/openlayers'
+    }, {
+      name: 'Reportquery',
+      path: '/reportquery'
     }]
   }
 ]

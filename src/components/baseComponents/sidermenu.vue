@@ -15,7 +15,7 @@
   export default {
     name: 'sidermenu',
     props: {
-        navdatas:Array
+        navdatas:Array,
     },
     data() {
       return {}
